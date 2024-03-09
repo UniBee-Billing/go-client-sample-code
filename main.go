@@ -27,7 +27,7 @@ func main() {
 			Description: env,
 		}}
 		apiClient := openapiclient.NewAPIClient(configuration)
-		resp, _, err := apiClient.MerchantSessionAPI.MerchantSessionNewSessionPost(ctx).UnibeeApiMerchantSessionNewReq(openapiclient.UnibeeApiMerchantSessionNewReq{
+		resp, _, err := apiClient.Session.SessionNewSessionPost(ctx).UnibeeApiMerchantSessionNewReq(openapiclient.UnibeeApiMerchantSessionNewReq{
 			Email:          "jack.fu@wowow.io", // should change to MLS‘s user email
 			ExternalUserId: "1709272139",       // should change to ID of MLS‘s user
 		}).Execute()
@@ -48,7 +48,7 @@ func main() {
 			Description: env,
 		}}
 		apiClient := openapiclient.NewAPIClient(configuration)
-		resp, _, err := apiClient.MerchantUserMetricAPI.MerchantMetricUserMetricGet(ctx).ExternalUserId("1709272139").Execute()
+		resp, _, err := apiClient.UserMetric.MetricUserMetricGet(ctx).ExternalUserId("1709272139").Execute()
 		if err != nil {
 			fmt.Println(err)
 		} else {
