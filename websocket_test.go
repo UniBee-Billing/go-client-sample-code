@@ -39,25 +39,50 @@ func TestWebSocket(t *testing.T) {
 						fmt.Printf("error:%s\n", err.Error())
 						continue
 					}
-					if one != nil && one.WebhookEvent == "user.metric.update" {
-						var stat *unibee.UnibeeInternalLogicGatewayRoUserMetric
-						err = gjson.Unmarshal([]byte(one.Data), &stat)
-						if err != nil {
-							fmt.Printf("error:%s\n", err.Error())
-							continue
+					if one != nil {
+						fmt.Printf("Receive Webhook event = %s\n", one.WebhookEvent)
+						if one.WebhookEvent == "user.metric.update" {
+							var metric *unibee.UnibeeInternalLogicGatewayRoUserMetric
+							err = gjson.Unmarshal([]byte(one.Data), &metric)
+							if err != nil {
+								fmt.Printf("error:%s\n", err.Error())
+								continue
+							}
+							fmt.Printf("Unibee's User Metric = %s\n", ToJsonString(metric))
+							fmt.Printf("Unibee's User isPaid = %v\n", unibee.BoolValue(metric.IsPaid))
+							if metric.Plan != nil {
+								fmt.Printf("Unibee's User PlanName = %s\n", unibee.StringValue(metric.Plan.PlanName))
+							}
+							var userRestrictionMap = make(map[string]interface{})
+							for _, metric := range metric.UserMerchantMetricStats {
+								userRestrictionMap[unibee.StringValue(metric.MetricLimit.Code)] = unibee.Int64Value(metric.MetricLimit.TotalLimit)
+							}
+							fmt.Printf("Unibee's Metric Limit List = %v\n", userRestrictionMap)
+							// next setup your user's restriction logic
+						} else if one.WebhookEvent == "payment.created" ||
+							one.WebhookEvent == "payment.success" ||
+							one.WebhookEvent == "payment.cancelled" ||
+							one.WebhookEvent == "payment.failure" ||
+							one.WebhookEvent == "payment.authorised.need" {
+							var paymentDetail *unibee.UnibeeApiMerchantPaymentPaymentDetail
+							err = gjson.Unmarshal([]byte(one.Data), &paymentDetail)
+							if err != nil {
+								fmt.Printf("error:%s\n", err.Error())
+								continue
+							}
+							fmt.Printf("Unibee's Payment = %s\n", ToJsonString(paymentDetail))
+						} else if one.WebhookEvent == "refund.created" ||
+							one.WebhookEvent == "refund.success" ||
+							one.WebhookEvent == "refund.failure" ||
+							one.WebhookEvent == "refund.reverse" {
+							var refundDetail *unibee.NullableUnibeeApiMerchantPaymentRefundDetail
+							err = gjson.Unmarshal([]byte(one.Data), &refundDetail)
+							if err != nil {
+								fmt.Printf("error:%s\n", err.Error())
+								continue
+							}
+							fmt.Printf("Unibee's Refund = %s\n", ToJsonString(refundDetail))
 						}
-						fmt.Printf("Unibee's User isPaid = %v\n", *stat.IsPaid)
-						if stat.Plan != nil {
-							fmt.Printf("Unibee's User PlanName = %s\n", *stat.Plan.PlanName)
-							extraData := gjson.New(*stat.Plan.ExtraMetricData)
-							fmt.Printf("allowed_browser_types %s\n", extraData.Get("allowed_browser_types"))
-						}
-						var userRestrictionMap = make(map[string]interface{})
-						for _, metric := range stat.UserMerchantMetricStats {
-							userRestrictionMap[*metric.MetricLimit.Code] = *metric.MetricLimit.TotalLimit
-						}
-						fmt.Printf("Unibee's Metric Limit List = %v\n", userRestrictionMap)
-						// next call restriction api
 					}
 				} else if mt == websocket.PingMessage {
 					// ignore ping message
