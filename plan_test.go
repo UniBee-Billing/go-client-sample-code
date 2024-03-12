@@ -9,12 +9,10 @@ import (
 )
 
 func TestPlanApi(t *testing.T) {
+	unibee.ApiKey = OpenapiKey
+	unibee.Host = UniBeeStageUrl
 	ctx := context.Background()
 	configuration := unibee.NewConfiguration()
-	configuration.AddDefaultHeader("Authorization", "Bearer "+OpenapiKey) // This is your test secret API key.
-	configuration.Servers = unibee.ServerConfigurations{unibee.ServerConfiguration{
-		URL: UniBeeStageUrl,
-	}}
 	apiClient := unibee.NewAPIClient(configuration)
 	{
 		// test new plan

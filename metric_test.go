@@ -11,13 +11,11 @@ import (
 )
 
 func TestMetricApi(t *testing.T) {
+	unibee.ApiKey = OpenapiKey
+	unibee.Host = UniBeeStageUrl
 	ctx := context.Background()
 	// Query user restriction from metric api
 	configuration := unibee.NewConfiguration()
-	configuration.AddDefaultHeader("Authorization", "Bearer "+OpenapiKey) // This is your test secret API key.
-	configuration.Servers = unibee.ServerConfigurations{unibee.ServerConfiguration{
-		URL: UniBeeStageUrl,
-	}}
 	apiClient := unibee.NewAPIClient(configuration)
 	{
 		t.Run("Test Metric GetUserMetric", func(t *testing.T) {

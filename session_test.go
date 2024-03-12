@@ -10,13 +10,11 @@ import (
 )
 
 func TestSessionApi(t *testing.T) {
+	unibee.ApiKey = OpenapiKey
+	unibee.Host = UniBeeStageUrl
 	ctx := context.Background()
 	// Create an account in billing and Provides one time URL to authenticate in a billing client area
 	configuration := unibee.NewConfiguration()
-	configuration.AddDefaultHeader("Authorization", "Bearer "+OpenapiKey) // This is your test secret API key.
-	configuration.Servers = unibee.ServerConfigurations{unibee.ServerConfiguration{
-		URL: UniBeeStageUrl,
-	}}
 	apiClient := unibee.NewAPIClient(configuration)
 	{
 		t.Run("Test Session NewSession", func(t *testing.T) {
