@@ -42,7 +42,7 @@ func TestWebSocket(t *testing.T) {
 					if one != nil {
 						fmt.Printf("Receive Webhook event = %s\n", one.WebhookEvent)
 						if one.WebhookEvent == "user.metric.update" {
-							var metric *unibee.UnibeeInternalLogicGatewayRoUserMetric
+							var metric *unibee.UnibeeApiMerchantMetricUserMetric
 							err = gjson.Unmarshal([]byte(one.Data), &metric)
 							if err != nil {
 								fmt.Printf("error:%s\n", err.Error())

@@ -11,12 +11,10 @@ import (
 )
 
 func TestOneTimePayment(t *testing.T) {
+	unibee.ApiKey = OpenapiKey
+	unibee.Host = UniBeeStageUrl
 	ctx := context.Background()
 	configuration := unibee.NewConfiguration()
-	configuration.AddDefaultHeader("Authorization", "Bearer "+OpenapiKey) // This is your test secret API key.
-	configuration.Servers = unibee.ServerConfigurations{unibee.ServerConfiguration{
-		URL: UniBeeStageUrl,
-	}}
 	apiClient := unibee.NewAPIClient(configuration)
 	{
 		t.Run("Test Payment Gateway", func(t *testing.T) {
@@ -52,6 +50,7 @@ func TestOneTimePayment(t *testing.T) {
 			require.Nil(t, err)
 			require.NotNil(t, resp)
 			assert.Equal(t, 200, httpRes.StatusCode)
+			assert.Equal(t, unibee.PaymentCreated, int(*resp.Data.Status))
 			fmt.Printf("Payment Url is %s\n", *resp.Data.Link)
 			// get the payment detail
 			detailResp, detailHttpRes, err := apiClient.Payment.PaymentDetailGet(ctx).PaymentId(unibee.StringValue(resp.Data.PaymentId)).Execute()
@@ -59,6 +58,7 @@ func TestOneTimePayment(t *testing.T) {
 			require.NotNil(t, resp)
 			assert.Equal(t, 200, detailHttpRes.StatusCode)
 			require.NotNil(t, detailResp.Data.PaymentDetail)
+			assert.Equal(t, unibee.PaymentCreated, int(*detailResp.Data.PaymentDetail.Payment.Status))
 			fmt.Printf("Payment Detail is %s", ToJsonString(detailResp.Data.PaymentDetail))
 		})
 	}
@@ -81,6 +81,7 @@ func TestOneTimePayment(t *testing.T) {
 			require.NotNil(t, resp)
 			assert.Equal(t, 200, detailHttpRes.StatusCode)
 			require.NotNil(t, detailResp.Data.RefundDetail)
+			assert.Equal(t, unibee.RefundCreated, int(*resp.Data.Status))
 			fmt.Printf("Payment Refund Detail is %s", ToJsonString(detailResp.Data.RefundDetail))
 		})
 	}
@@ -119,15 +120,21 @@ func TestOneTimePayment(t *testing.T) {
 			assert.Equal(t, 200, httpRes.StatusCode)
 			require.NotNil(t, resp.Data.PaymentId)
 			require.NotNil(t, resp.Data.Link)
+			require.Equal(t, unibee.PaymentCreated, int(*resp.Data.Status))
 			fmt.Printf("Payment Url is %s\n", *resp.Data.Link)
 			//cancel the payment
 			_, cancelHttpRes, err := apiClient.Payment.PaymentCancelPost(ctx).UnibeeApiMerchantPaymentCancelReq(unibee.UnibeeApiMerchantPaymentCancelReq{
-				ExternalCancelId: uuid.New().String(),
-				PaymentId:        unibee.StringValue(resp.Data.PaymentId),
+				PaymentId: unibee.StringValue(resp.Data.PaymentId),
 			}).Execute()
 			require.Nil(t, err)
 			require.NotNil(t, resp)
 			assert.Equal(t, 200, cancelHttpRes.StatusCode)
+			detailResp, detailHttpRes, err := apiClient.Payment.PaymentDetailGet(ctx).PaymentId(unibee.StringValue(resp.Data.PaymentId)).Execute()
+			require.Nil(t, err)
+			require.NotNil(t, resp)
+			assert.Equal(t, 200, detailHttpRes.StatusCode)
+			require.NotNil(t, detailResp.Data.PaymentDetail)
+			assert.Equal(t, unibee.PaymentCancelled, int(*detailResp.Data.PaymentDetail.Payment.Status))
 		})
 	}
 
