@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 	"github.com/UniB-e-e/unibee-go-client"
-	"github.com/gogf/gf/v2/encoding/gjson"
 	"github.com/magiconair/properties/assert"
 	"github.com/stretchr/testify/require"
 	"testing"
@@ -26,8 +25,6 @@ func TestMetricApi(t *testing.T) {
 			fmt.Printf("Unibee's User isPaid = %v\n", *resp.Data.GetUserMetric().IsPaid)
 			if resp.Data.GetUserMetric().Plan != nil {
 				fmt.Printf("Unibee's User PlanName = %s\n", *resp.Data.GetUserMetric().Plan.PlanName)
-				extraData := gjson.New(*resp.Data.GetUserMetric().Plan.ExtraMetricData)
-				fmt.Printf("allowed_browser_types %s\n", extraData.Get("allowed_browser_types"))
 			}
 			var userRestrictionMap = make(map[string]interface{})
 			for _, metric := range resp.Data.GetUserMetric().UserMerchantMetricStats {
