@@ -37,11 +37,11 @@ func TestOneTimePayment(t *testing.T) {
 			// create new payment
 			resp, httpRes, err := apiClient.Payment.PaymentNewPost(ctx).UnibeeApiMerchantPaymentNewReq(unibee.UnibeeApiMerchantPaymentNewReq{
 				CountryCode:       unibee.String("CH"),
-				TotalAmount:       100,
-				Currency:          "USD",
-				Email:             "jack.fu@wowow.io",
-				ExternalPaymentId: uuid.New().String(), // your paymentId
-				ExternalUserId:    "1709272139",
+				TotalAmount:       unibee.Int64(100),
+				Currency:          unibee.String("USD"),
+				Email:             unibee.String("jack.fu@wowow.io"),
+				ExternalPaymentId: unibee.String(uuid.New().String()), // your paymentId
+				ExternalUserId:    unibee.String("1709272139"),
 				GatewayId:         *gatewayResp.Data.Gateways[0].GatewayId,
 				Items:             nil, // without items
 				Metadata:          &map[string]string{"key1": "value1", "key2": "value2"},
@@ -96,11 +96,11 @@ func TestOneTimePayment(t *testing.T) {
 			require.Greater(t, len(gatewayResp.Data.Gateways), 0)
 			// create new payment
 			resp, httpRes, err := apiClient.Payment.PaymentNewPost(ctx).UnibeeApiMerchantPaymentNewReq(unibee.UnibeeApiMerchantPaymentNewReq{
-				TotalAmount:       200,
-				Currency:          "USD",
-				Email:             "jack.fu@wowow.io",
-				ExternalPaymentId: uuid.New().String(),
-				ExternalUserId:    "1709272139",
+				TotalAmount:       unibee.Int64(200),
+				Currency:          unibee.String("USD"),
+				Email:             unibee.String("jack.fu@wowow.io"),
+				ExternalPaymentId: unibee.String(uuid.New().String()),
+				ExternalUserId:    unibee.String("1709272139"),
 				GatewayId:         *gatewayResp.Data.Gateways[0].GatewayId,
 				Items: []unibee.UnibeeApiMerchantPaymentItem{{
 					Amount:                 200,

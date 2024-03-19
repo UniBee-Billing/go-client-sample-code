@@ -3,7 +3,7 @@ module client-go-sample-code
 go 1.21.6
 
 require (
-	github.com/UniB-e-e/unibee-go-client v1.1.5
+	github.com/UniB-e-e/unibee-go-client v1.1.6
 	github.com/gogf/gf/v2 v2.6.4
 	github.com/gorilla/websocket v1.5.1
 	github.com/magiconair/properties v1.8.6
