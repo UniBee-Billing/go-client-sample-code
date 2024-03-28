@@ -55,10 +55,26 @@ func TestPlanApi(t *testing.T) {
 	}
 	{
 		t.Run("Test Get Plan List", func(t *testing.T) {
-			resp, httpRes, err := apiClient.Plan.PlanListGet(ctx).Execute()
+			resp, httpRes, err := apiClient.Plan.PlanListGet(ctx).Page(0).Count(20).Execute()
 			if err != nil {
 				return
 			}
+			require.Nil(t, err)
+			require.NotNil(t, resp)
+			require.NotNil(t, resp.Data.Plans)
+			assert.Equal(t, 200, httpRes.StatusCode)
+		})
+		t.Run("Test Get Plan List Use Post", func(t *testing.T) {
+			resp, httpRes, err := apiClient.Plan.PlanListPost(ctx).UnibeeApiMerchantPlanListReq(unibee.UnibeeApiMerchantPlanListReq{
+				Count:         unibee.PtrInt32(20),
+				Page:          unibee.PtrInt32(0),
+				Currency:      nil,
+				PublishStatus: nil,
+				SortField:     nil,
+				SortType:      nil,
+				Status:        nil,
+				Type:          nil,
+			}).Execute()
 			require.Nil(t, err)
 			require.NotNil(t, resp)
 			require.NotNil(t, resp.Data.Plans)
