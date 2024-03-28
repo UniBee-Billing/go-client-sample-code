@@ -53,4 +53,16 @@ func TestPlanApi(t *testing.T) {
 			assert.Equal(t, 200, httpRes.StatusCode)
 		})
 	}
+	{
+		t.Run("Test Get Plan List", func(t *testing.T) {
+			resp, httpRes, err := apiClient.Plan.PlanListGet(ctx).Execute()
+			if err != nil {
+				return
+			}
+			require.Nil(t, err)
+			require.NotNil(t, resp)
+			require.NotNil(t, resp.Data.Plans)
+			assert.Equal(t, 200, httpRes.StatusCode)
+		})
+	}
 }
