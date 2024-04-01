@@ -14,6 +14,7 @@ func TestPlanApi(t *testing.T) {
 	ctx := context.Background()
 	configuration := unibee.NewConfiguration()
 	apiClient := unibee.NewAPIClient(configuration)
+	var planId int64
 	{
 		// test new plan
 		t.Run("Test New Main Plan", func(t *testing.T) {
@@ -21,7 +22,7 @@ func TestPlanApi(t *testing.T) {
 				PlanName:      "testPlanByApi",
 				Amount:        100,
 				Currency:      "USD",
-				Type:          nil,
+				Type:          unibee.Int32(unibee.PlanTypeMain),
 				Description:   nil,
 				IntervalCount: unibee.PtrInt32(1),
 				IntervalUnit:  unibee.String("Day"),
@@ -32,12 +33,14 @@ func TestPlanApi(t *testing.T) {
 			require.Nil(t, err)
 			require.NotNil(t, resp)
 			assert.Equal(t, 200, httpRes.StatusCode)
+			planId = *resp.Data.Plan.Id
 		})
 	}
 	{
 		// test edit plan, plan can not edit after activated
 		t.Run("Test Edit Main Plan", func(t *testing.T) {
 			resp, httpRes, err := apiClient.Plan.PlanEditPost(ctx).UnibeeApiMerchantPlanEditReq(unibee.UnibeeApiMerchantPlanEditReq{
+				PlanId:        planId,
 				PlanName:      "testPlanByApi",
 				Amount:        100,
 				Currency:      "USD",
@@ -80,5 +83,8 @@ func TestPlanApi(t *testing.T) {
 			require.NotNil(t, resp.Data.Plans)
 			assert.Equal(t, 200, httpRes.StatusCode)
 		})
+	}
+	{
+		apiClient.Plan.PlanActivatePost(ctx).UnibeeApiMerchantPlanActivateReq(unibee.UnibeeApiMerchantPlanActivateReq{PlanId: planId})
 	}
 }
