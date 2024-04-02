@@ -13,7 +13,6 @@ func TestGetGatewayWebhookUrl(t *testing.T) {
 	unibee.ApiKey = "EUXAgwv3Vcr1PFWt2SgBumMHXn3ImBqM"
 	unibee.Host = UniBeeStageUrl
 	ctx := context.Background()
-	// Query user restriction from metric api
 	configuration := unibee.NewConfiguration()
 	apiClient := unibee.NewAPIClient(configuration)
 	{
@@ -23,6 +22,13 @@ func TestGetGatewayWebhookUrl(t *testing.T) {
 			require.NotNil(t, resp)
 			assert.Equal(t, 200, httpRes.StatusCode)
 			fmt.Printf("GatewayWebhookUrl %s\n", *resp.Data.GatewayWebhookUrl)
+		})
+		t.Run("Test Changelly Setup", func(t *testing.T) {
+			apiClient.Gateway.GatewaySetupPost(ctx).UnibeeApiMerchantGatewaySetupReq(unibee.UnibeeApiMerchantGatewaySetupReq{
+				GatewayName:   "",
+				GatewayKey:    nil,
+				GatewaySecret: nil,
+			})
 		})
 	}
 }
