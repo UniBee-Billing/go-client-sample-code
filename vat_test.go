@@ -18,5 +18,6 @@ func TestVatSetup(t *testing.T) {
 			Data:        "${YOUR_VAT_SENSE_KEY}",
 			GatewayName: "vatsense",
 		})
+
 	})
 }
