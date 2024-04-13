@@ -64,7 +64,7 @@ func TestWebSocket(t *testing.T) {
 							one.WebhookEvent == "payment.cancelled" ||
 							one.WebhookEvent == "payment.failure" ||
 							one.WebhookEvent == "payment.authorised.need" {
-							var paymentDetail *unibee.UnibeeApiMerchantPaymentPaymentDetail
+							var paymentDetail *unibee.UnibeeApiBeanDetailPaymentDetail
 							err = gjson.Unmarshal([]byte(one.Data), &paymentDetail)
 							if err != nil {
 								fmt.Printf("error:%s\n", err.Error())
@@ -75,7 +75,7 @@ func TestWebSocket(t *testing.T) {
 							one.WebhookEvent == "refund.success" ||
 							one.WebhookEvent == "refund.failure" ||
 							one.WebhookEvent == "refund.reverse" {
-							var refundDetail *unibee.NullableUnibeeApiMerchantPaymentRefundDetail
+							var refundDetail *unibee.UnibeeApiBeanDetailRefundDetail
 							err = gjson.Unmarshal([]byte(one.Data), &refundDetail)
 							if err != nil {
 								fmt.Printf("error:%s\n", err.Error())

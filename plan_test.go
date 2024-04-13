@@ -26,7 +26,7 @@ func TestPlanApi(t *testing.T) {
 				Description:   nil,
 				IntervalCount: unibee.PtrInt32(1),
 				IntervalUnit:  unibee.String("Day"),
-				Metadata:      nil,
+				Metadata:      &map[string]string{"testKey": "testValue"},
 				MetricLimits:  nil,
 				AddonIds:      nil,
 			}).Execute()

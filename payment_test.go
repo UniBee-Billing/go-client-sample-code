@@ -109,7 +109,7 @@ func TestOneTimePayment(t *testing.T) {
 					AmountExcludingTax:     nil,
 					Quantity:               nil,
 					Tax:                    nil,
-					TaxScale:               nil,
+					TaxPercentage:          nil,
 					UnitAmountExcludingTax: nil,
 				}}, // with items
 				RedirectUrl: unibee.String("http://localhost/paymentResult"),
