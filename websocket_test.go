@@ -21,7 +21,7 @@ func TestWebSocket(t *testing.T) {
 		client.TLSClientConfig = &tls.Config{}
 
 		for {
-			conn, _, err := client.Dial("ws://api.unibee.top/merchant_ws/"+OpenapiKey, nil)
+			conn, _, err := client.Dial("wss://api.unibee.top/merchant_ws/"+OpenapiKey, nil)
 			if err != nil {
 				panic(err)
 			}
