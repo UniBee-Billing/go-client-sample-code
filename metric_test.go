@@ -3,7 +3,7 @@ package main
 import (
 	"context"
 	"fmt"
-	"github.com/UniB-e-e/unibee-go-client"
+	"github.com/UniBee-Billing/unibee-go-client"
 	"github.com/magiconair/properties/assert"
 	"github.com/stretchr/testify/require"
 	"testing"

@@ -3,7 +3,7 @@ package main
 import (
 	"crypto/tls"
 	"fmt"
-	"github.com/UniB-e-e/unibee-go-client"
+	"github.com/UniBee-Billing/unibee-go-client"
 	"github.com/gogf/gf/v2/encoding/gjson"
 	"github.com/gogf/gf/v2/net/gclient"
 	"github.com/gorilla/websocket"

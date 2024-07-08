@@ -3,7 +3,6 @@ module client-go-sample-code
 go 1.21.6
 
 require (
-	github.com/UniB-e-e/unibee-go-client v1.1.8
 	github.com/gogf/gf/v2 v2.6.4
 	github.com/gorilla/websocket v1.5.1
 	github.com/magiconair/properties v1.8.6
@@ -12,6 +11,7 @@ require (
 
 require (
 	github.com/BurntSushi/toml v1.2.0 // indirect
+	github.com/UniBee-Billing/unibee-go-client v1.1.11 // indirect
 	github.com/clbanning/mxj/v2 v2.7.0 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/fatih/color v1.15.0 // indirect

@@ -3,7 +3,7 @@ package main
 import (
 	"context"
 	"fmt"
-	"github.com/UniB-e-e/unibee-go-client"
+	"github.com/UniBee-Billing/unibee-go-client"
 	"github.com/google/uuid"
 	"github.com/magiconair/properties/assert"
 	"github.com/stretchr/testify/require"
@@ -104,7 +104,7 @@ func TestOneTimePayment(t *testing.T) {
 				GatewayId:         *gatewayResp.Data.Gateways[0].GatewayId,
 				Items: []unibee.UnibeeApiMerchantPaymentItem{{
 					Amount:                 200,
-					Description:            "test item",
+					Description:            unibee.String("test item"),
 					Currency:               unibee.String("usd"),
 					AmountExcludingTax:     nil,
 					Quantity:               nil,

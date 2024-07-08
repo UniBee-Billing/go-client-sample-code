@@ -2,7 +2,7 @@ package main
 
 import (
 	"context"
-	"github.com/UniB-e-e/unibee-go-client"
+	"github.com/UniBee-Billing/unibee-go-client"
 	"github.com/magiconair/properties/assert"
 	"github.com/stretchr/testify/require"
 	"testing"
@@ -41,9 +41,9 @@ func TestPlanApi(t *testing.T) {
 		t.Run("Test Edit Main Plan", func(t *testing.T) {
 			resp, httpRes, err := apiClient.Plan.PlanEditPost(ctx).UnibeeApiMerchantPlanEditReq(unibee.UnibeeApiMerchantPlanEditReq{
 				PlanId:        planId,
-				PlanName:      "testPlanByApi",
-				Amount:        100,
-				Currency:      "USD",
+				PlanName:      unibee.String("testPlanByApi"),
+				Amount:        unibee.Int32(100),
+				Currency:      unibee.String("USD"),
 				Description:   nil,
 				IntervalCount: unibee.PtrInt32(1),
 				IntervalUnit:  unibee.String("Day"),

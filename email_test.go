@@ -2,7 +2,7 @@ package main
 
 import (
 	"context"
-	"github.com/UniB-e-e/unibee-go-client"
+	"github.com/UniBee-Billing/unibee-go-client"
 	"testing"
 )
 
